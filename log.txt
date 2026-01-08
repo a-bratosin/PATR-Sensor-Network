@@ -1,0 +1,420 @@
+========================================
+  Wireless Sensor Network Localization
+  (WSN Target Localization System)      
+========================================
+
+[MAIN] Created communication queues
+[MAIN] Created Target Node task
+[MAIN] Created 4 Sensor Node tasks
+[MAIN] Created Master Node task
+
+[MAIN] Starting FreeRTOS Scheduler...
+
+[TARGET] Initialized at position (15, 0, )
+[TARGET] Broadcast #1 - Position: (15, 0)
+[MASTER] Initialized with 4 sensors
+[SENSOR_0] Started at position (0, 0)
+[SENSOR_1] Started at position (30, 0)
+[SENSOR_2] Started at position (15, 26)
+[SENSOR_3] Started at position (15, -26)
+[TARGET] Broadcast #2 - Position: (14.9, 0.3)
+  [SENSOR_0] Detected msg #2 (RSSI: -10.3828 dBm)
+  [SENSOR_1] Detected msg #2 (RSSI: -8.09581 dBm)
+  [SENSOR_2] Detected msg #2 (RSSI: -14.9673 dBm)
+  [SENSOR_3] Detected msg #2 (RSSI: -15.2304 dBm)
+[MASTER] Solving msg #2 with 4 sensors
+  SENSOR_0 RSSI=-10.3828 dBm
+  SENSOR_1 RSSI=-8.09581 dBm
+  SENSOR_2 RSSI=-14.9673 dBm
+  SENSOR_3 RSSI=-15.2304 dBm
+[MASTER] Target estimate: (16.7624, 0.305246)
+
+[TARGET] Broadcast #3 - Position: (14.8, 0.6)
+  [SENSOR_0] Detected msg #3 (RSSI: -8.7825 dBm)
+  [SENSOR_1] Detected msg #3 (RSSI: -8.09882 dBm)
+  [SENSOR_2] Detected msg #3 (RSSI: -17.573 dBm)
+  [SENSOR_3] Detected msg #3 (RSSI: -17.2402 dBm)
+[MASTER] Solving msg #3 with 4 sensors
+  SENSOR_0 RSSI=-8.7825 dBm
+  SENSOR_1 RSSI=-8.09882 dBm
+  SENSOR_2 RSSI=-17.573 dBm
+  SENSOR_3 RSSI=-17.2402 dBm
+[MASTER] Target estimate: (13.3917, -0.495969)
+
+[TARGET] Broadcast #4 - Position: (14.7, 0.9)
+  [SENSOR_0] Detected msg #4 (RSSI: -9.90125 dBm)
+  [SENSOR_1] Detected msg #4 (RSSI: -8.89152 dBm)
+  [SENSOR_2] Detected msg #4 (RSSI: -16.2166 dBm)
+  [SENSOR_3] Detected msg #4 (RSSI: -17.2774 dBm)
+[MASTER] Solving msg #4 with 4 sensors
+  SENSOR_0 RSSI=-9.90125 dBm
+  SENSOR_1 RSSI=-8.89152 dBm
+  SENSOR_2 RSSI=-16.2166 dBm
+  SENSOR_3 RSSI=-17.2774 dBm
+[MASTER] Target estimate: (14.4114, 1.48856)
+
+[TARGET] Broadcast #5 - Position: (14.6, 1.2)
+  [SENSOR_0] Detected msg #5 (RSSI: -9.41264 dBm)
+  [SENSOR_1] Detected msg #5 (RSSI: -10.7341 dBm)
+  [SENSOR_2] Detected msg #5 (RSSI: -12.6433 dBm)
+  [SENSOR_3] Detected msg #5 (RSSI: -15.1617 dBm)
+[MASTER] Solving msg #5 with 4 sensors
+  SENSOR_0 RSSI=-9.41264 dBm
+  SENSOR_1 RSSI=-10.7341 dBm
+  SENSOR_2 RSSI=-12.6433 dBm
+  SENSOR_3 RSSI=-15.1617 dBm
+[MASTER] Target estimate: (15.5709, 2.60841)
+
+[TARGET] Broadcast #6 - Position: (14.5, 1.5)
+  [SENSOR_0] Detected msg #6 (RSSI: -8.77654 dBm)
+  [SENSOR_1] Detected msg #6 (RSSI: -10.2431 dBm)
+  [SENSOR_2] Detected msg #6 (RSSI: -14.1302 dBm)
+  [SENSOR_3] Detected msg #6 (RSSI: -16.6335 dBm)
+[MASTER] Solving msg #6 with 4 sensors
+  SENSOR_0 RSSI=-8.77654 dBm
+  SENSOR_1 RSSI=-10.2431 dBm
+  SENSOR_2 RSSI=-14.1302 dBm
+  SENSOR_3 RSSI=-16.6335 dBm
+[MASTER] Target estimate: (13.8658, 3.00722)
+
+[TARGET] Broadcast #7 - Position: (14.4, 1.8)
+  [SENSOR_0] Detected msg #7 (RSSI: -9.02627 dBm)
+  [SENSOR_1] Detected msg #7 (RSSI: -7.64022 dBm)
+  [SENSOR_2] Detected msg #7 (RSSI: -13.465 dBm)
+  [SENSOR_3] Detected msg #7 (RSSI: -14.9969 dBm)
+[MASTER] Solving msg #7 with 4 sensors
+  SENSOR_0 RSSI=-9.02627 dBm
+  SENSOR_1 RSSI=-7.64022 dBm
+  SENSOR_2 RSSI=-13.465 dBm
+  SENSOR_3 RSSI=-14.9969 dBm
+[MASTER] Target estimate: (16.3884, 1.58044)
+
+[TARGET] Broadcast #8 - Position: (14.3, 2.1)
+  [SENSOR_0] Detected msg #8 (RSSI: -8.55368 dBm)
+  [SENSOR_1] Detected msg #8 (RSSI: -10.7759 dBm)
+  [SENSOR_2] Detected msg #8 (RSSI: -14.3453 dBm)
+  [SENSOR_3] Detected msg #8 (RSSI: -16.1207 dBm)
+[MASTER] Solving msg #8 with 4 sensors
+  SENSOR_0 RSSI=-8.55368 dBm
+  SENSOR_1 RSSI=-10.7759 dBm
+  SENSOR_2 RSSI=-14.3453 dBm
+  SENSOR_3 RSSI=-16.1207 dBm
+[MASTER] Target estimate: (13.5818, 2.10943)
+
+[TARGET] Broadcast #9 - Position: (14.2, 2.4)
+  [SENSOR_0] Detected msg #9 (RSSI: -9.6904 dBm)
+  [SENSOR_1] Detected msg #9 (RSSI: -11.0199 dBm)
+  [SENSOR_2] Detected msg #9 (RSSI: -14.7996 dBm)
+  [SENSOR_3] Detected msg #9 (RSSI: -16.5227 dBm)
+[MASTER] Solving msg #9 with 4 sensors
+  SENSOR_0 RSSI=-9.6904 dBm
+  SENSOR_1 RSSI=-11.0199 dBm
+  SENSOR_2 RSSI=-14.7996 dBm
+  SENSOR_3 RSSI=-16.5227 dBm
+[MASTER] Target estimate: (13.8987, 2.18368)
+
+[TARGET] Broadcast #10 - Position: (14.1, 2.7)
+  [SENSOR_0] Detected msg #10 (RSSI: -9.04753 dBm)
+  [SENSOR_1] Detected msg #10 (RSSI: -10.2675 dBm)
+  [SENSOR_2] Detected msg #10 (RSSI: -13.1629 dBm)
+  [SENSOR_3] Detected msg #10 (RSSI: -17.9559 dBm)
+[MASTER] Solving msg #10 with 4 sensors
+  SENSOR_0 RSSI=-9.04753 dBm
+  SENSOR_1 RSSI=-10.2675 dBm
+  SENSOR_2 RSSI=-13.1629 dBm
+  SENSOR_3 RSSI=-17.9559 dBm
+[MASTER] Target estimate: (13.4968, 5.87433)
+
+[TARGET] Broadcast #11 - Position: (14, 3)
+  [SENSOR_0] Detected msg #11 (RSSI: -8.0411 dBm)
+  [SENSOR_1] Detected msg #11 (RSSI: -8.00025 dBm)
+  [SENSOR_2] Detected msg #11 (RSSI: -15.1171 dBm)
+  [SENSOR_3] Detected msg #11 (RSSI: -16.0955 dBm)
+[MASTER] Solving msg #11 with 4 sensors
+  SENSOR_0 RSSI=-8.0411 dBm
+  SENSOR_1 RSSI=-8.00025 dBm
+  SENSOR_2 RSSI=-15.1171 dBm
+  SENSOR_3 RSSI=-16.0955 dBm
+[MASTER] Target estimate: (14.4727, 1.16668)
+
+[TARGET] Broadcast #12 - Position: (13.9, 3.3)
+  [SENSOR_0] Detected msg #12 (RSSI: -9.65296 dBm)
+  [SENSOR_1] Detected msg #12 (RSSI: -11.1931 dBm)
+  [SENSOR_2] Detected msg #12 (RSSI: -15.0251 dBm)
+  [SENSOR_3] Detected msg #12 (RSSI: -16.3172 dBm)
+[MASTER] Solving msg #12 with 4 sensors
+  SENSOR_0 RSSI=-9.65296 dBm
+  SENSOR_1 RSSI=-11.1931 dBm
+  SENSOR_2 RSSI=-15.0251 dBm
+  SENSOR_3 RSSI=-16.3172 dBm
+[MASTER] Target estimate: (13.7633, 1.64327)
+
+[TARGET] Broadcast #13 - Position: (13.8, 3.6)
+  [SENSOR_0] Detected msg #13 (RSSI: -8.75687 dBm)
+  [SENSOR_1] Detected msg #13 (RSSI: -11.952 dBm)
+  [SENSOR_2] Detected msg #13 (RSSI: -13.9868 dBm)
+  [SENSOR_3] Detected msg #13 (RSSI: -16.5629 dBm)
+[MASTER] Solving msg #13 with 4 sensors
+  SENSOR_0 RSSI=-8.75687 dBm
+  SENSOR_1 RSSI=-11.952 dBm
+  SENSOR_2 RSSI=-13.9868 dBm
+  SENSOR_3 RSSI=-16.5629 dBm
+[MASTER] Target estimate: (12.7629, 3.13738)
+
+[TARGET] Broadcast #14 - Position: (13.7, 3.9)
+  [SENSOR_0] Detected msg #14 (RSSI: -11.001 dBm)
+  [SENSOR_1] Detected msg #14 (RSSI: -11.1266 dBm)
+  [SENSOR_2] Detected msg #14 (RSSI: -13.2065 dBm)
+  [SENSOR_3] Detected msg #14 (RSSI: -18.2546 dBm)
+[MASTER] Solving msg #14 with 4 sensors
+  SENSOR_0 RSSI=-11.001 dBm
+  SENSOR_1 RSSI=-11.1266 dBm
+  SENSOR_2 RSSI=-13.2065 dBm
+  SENSOR_3 RSSI=-18.2546 dBm
+[MASTER] Target estimate: (14.5222, 6.54052)
+
+[TARGET] Broadcast #15 - Position: (13.6, 4.2)
+  [SENSOR_0] Detected msg #15 (RSSI: -7.63292 dBm)
+  [SENSOR_1] Detected msg #15 (RSSI: -10.8121 dBm)
+  [SENSOR_2] Detected msg #15 (RSSI: -11.5556 dBm)
+  [SENSOR_3] Detected msg #15 (RSSI: -17.8495 dBm)
+[MASTER] Solving msg #15 with 4 sensors
+  SENSOR_0 RSSI=-7.63292 dBm
+  SENSOR_1 RSSI=-10.8121 dBm
+  SENSOR_2 RSSI=-11.5556 dBm
+  SENSOR_3 RSSI=-17.8495 dBm
+[MASTER] Target estimate: (12.657, 6.94692)
+
+[TARGET] Broadcast #16 - Position: (13.5, 4.5)
+  [SENSOR_0] Detected msg #16 (RSSI: -10.3453 dBm)
+  [SENSOR_1] Detected msg #16 (RSSI: -8.56252 dBm)
+  [SENSOR_2] Detected msg #16 (RSSI: -11.6601 dBm)
+  [SENSOR_3] Detected msg #16 (RSSI: -16.4177 dBm)
+[MASTER] Solving msg #16 with 4 sensors
+  SENSOR_0 RSSI=-10.3453 dBm
+  SENSOR_1 RSSI=-8.56252 dBm
+  SENSOR_2 RSSI=-11.6601 dBm
+  SENSOR_3 RSSI=-16.4177 dBm
+[MASTER] Target estimate: (17.016, 4.92184)
+
+[TARGET] Broadcast #17 - Position: (13.4, 4.8)
+  [SENSOR_0] Detected msg #17 (RSSI: -8.41299 dBm)
+  [SENSOR_1] Detected msg #17 (RSSI: -11.4183 dBm)
+  [SENSOR_2] Detected msg #17 (RSSI: -14.1402 dBm)
+  [SENSOR_3] Detected msg #17 (RSSI: -18.0273 dBm)
+[MASTER] Solving msg #17 with 4 sensors
+  SENSOR_0 RSSI=-8.41299 dBm
+  SENSOR_1 RSSI=-11.4183 dBm
+  SENSOR_2 RSSI=-14.1402 dBm
+  SENSOR_3 RSSI=-18.0273 dBm
+[MASTER] Target estimate: (11.78, 5.12795)
+
+[TARGET] Broadcast #18 - Position: (13.3, 5.1)
+  [SENSOR_0] Detected msg #18 (RSSI: -8.58119 dBm)
+  [SENSOR_1] Detected msg #18 (RSSI: -10.8246 dBm)
+  [SENSOR_2] Detected msg #18 (RSSI: -13.1475 dBm)
+  [SENSOR_3] Detected msg #18 (RSSI: -17.6462 dBm)
+[MASTER] Solving msg #18 with 4 sensors
+  SENSOR_0 RSSI=-8.58119 dBm
+  SENSOR_1 RSSI=-10.8246 dBm
+  SENSOR_2 RSSI=-13.1475 dBm
+  SENSOR_3 RSSI=-17.6462 dBm
+[MASTER] Target estimate: (12.9937, 5.43411)
+
+[TARGET] Broadcast #19 - Position: (13.2, 5.4)
+  [SENSOR_0] Detected msg #19 (RSSI: -8.54246 dBm)
+  [SENSOR_1] Detected msg #19 (RSSI: -9.83883 dBm)
+  [SENSOR_2] Detected msg #19 (RSSI: -11.3454 dBm)
+  [SENSOR_3] Detected msg #19 (RSSI: -17.1795 dBm)
+[MASTER] Solving msg #19 with 4 sensors
+  SENSOR_0 RSSI=-8.54246 dBm
+  SENSOR_1 RSSI=-9.83883 dBm
+  SENSOR_2 RSSI=-11.3454 dBm
+  SENSOR_3 RSSI=-17.1795 dBm
+[MASTER] Target estimate: (14.4339, 6.10968)
+
+[TARGET] Broadcast #20 - Position: (13.1, 5.7)
+  [SENSOR_0] Detected msg #20 (RSSI: -8.13999 dBm)
+  [SENSOR_1] Detected msg #20 (RSSI: -10.7126 dBm)
+  [SENSOR_2] Detected msg #20 (RSSI: -12.5018 dBm)
+  [SENSOR_3] Detected msg #20 (RSSI: -19.4198 dBm)
+[MASTER] Solving msg #20 with 4 sensors
+  SENSOR_0 RSSI=-8.13999 dBm
+  SENSOR_1 RSSI=-10.7126 dBm
+  SENSOR_2 RSSI=-12.5018 dBm
+  SENSOR_3 RSSI=-19.4198 dBm
+[MASTER] Target estimate: (11.4756, 8.82107)
+
+[TARGET] Broadcast #21 - Position: (13, 6)
+  [SENSOR_0] Detected msg #21 (RSSI: -7.48528 dBm)
+  [SENSOR_1] Detected msg #21 (RSSI: -12.5375 dBm)
+  [SENSOR_2] Detected msg #21 (RSSI: -13.2702 dBm)
+  [SENSOR_3] Detected msg #21 (RSSI: -17.8002 dBm)
+[MASTER] Solving msg #21 with 4 sensors
+  SENSOR_0 RSSI=-7.48528 dBm
+  SENSOR_1 RSSI=-12.5375 dBm
+  SENSOR_2 RSSI=-13.2702 dBm
+  SENSOR_3 RSSI=-17.8002 dBm
+[MASTER] Target estimate: (10.7063, 5.67164)
+
+[TARGET] Broadcast #22 - Position: (12.9, 6.3)
+  [SENSOR_0] Detected msg #22 (RSSI: -8.73629 dBm)
+  [SENSOR_1] Detected msg #22 (RSSI: -12.0295 dBm)
+  [SENSOR_2] Detected msg #22 (RSSI: -12.6445 dBm)
+  [SENSOR_3] Detected msg #22 (RSSI: -16.8871 dBm)
+[MASTER] Solving msg #22 with 4 sensors
+  SENSOR_0 RSSI=-8.73629 dBm
+  SENSOR_1 RSSI=-12.0295 dBm
+  SENSOR_2 RSSI=-12.6445 dBm
+  SENSOR_3 RSSI=-16.8871 dBm
+[MASTER] Target estimate: (12.9873, 4.8778)
+
+[TARGET] Broadcast #23 - Position: (12.8, 6.6)
+  [SENSOR_0] Detected msg #23 (RSSI: -8.93992 dBm)
+  [SENSOR_1] Detected msg #23 (RSSI: -9.59385 dBm)
+  [SENSOR_2] Detected msg #23 (RSSI: -13.76 dBm)
+  [SENSOR_3] Detected msg #23 (RSSI: -18.8276 dBm)
+[MASTER] Solving msg #23 with 4 sensors
+  SENSOR_0 RSSI=-8.93992 dBm
+  SENSOR_1 RSSI=-9.59385 dBm
+  SENSOR_2 RSSI=-13.76 dBm
+  SENSOR_3 RSSI=-18.8276 dBm
+[MASTER] Target estimate: (13.0429, 6.68763)
+
+[TARGET] Broadcast #24 - Position: (12.7, 6.9)
+  [SENSOR_0] Detected msg #24 (RSSI: -8.09603 dBm)
+  [SENSOR_1] Detected msg #24 (RSSI: -12.2459 dBm)
+  [SENSOR_2] Detected msg #24 (RSSI: -11.6391 dBm)
+  [SENSOR_3] Detected msg #24 (RSSI: -16.3697 dBm)
+[MASTER] Solving msg #24 with 4 sensors
+  SENSOR_0 RSSI=-8.09603 dBm
+  SENSOR_1 RSSI=-12.2459 dBm
+  SENSOR_2 RSSI=-11.6391 dBm
+  SENSOR_3 RSSI=-16.3697 dBm
+[MASTER] Target estimate: (13.1179, 4.98886)
+
+[TARGET] Broadcast #25 - Position: (12.6, 7.2)
+  [SENSOR_0] Detected msg #25 (RSSI: -7.74068 dBm)
+  [SENSOR_1] Detected msg #25 (RSSI: -11.3228 dBm)
+  [SENSOR_2] Detected msg #25 (RSSI: -12.7543 dBm)
+  [SENSOR_3] Detected msg #25 (RSSI: -17.3753 dBm)
+[MASTER] Solving msg #25 with 4 sensors
+  SENSOR_0 RSSI=-7.74068 dBm
+  SENSOR_1 RSSI=-11.3228 dBm
+  SENSOR_2 RSSI=-12.7543 dBm
+  SENSOR_3 RSSI=-17.3753 dBm
+[MASTER] Target estimate: (12.3925, 5.3761)
+
+[TARGET] Broadcast #26 - Position: (12.5, 7.5)
+  [SENSOR_0] Detected msg #26 (RSSI: -8.84448 dBm)
+  [SENSOR_1] Detected msg #26 (RSSI: -11.2121 dBm)
+  [SENSOR_2] Detected msg #26 (RSSI: -12.275 dBm)
+  [SENSOR_3] Detected msg #26 (RSSI: -17.2257 dBm)
+[MASTER] Solving msg #26 with 4 sensors
+  SENSOR_0 RSSI=-8.84448 dBm
+  SENSOR_1 RSSI=-11.2121 dBm
+  SENSOR_2 RSSI=-12.275 dBm
+  SENSOR_3 RSSI=-17.2257 dBm
+[MASTER] Target estimate: (13.5246, 5.60683)
+
+[TARGET] Broadcast #27 - Position: (12.4, 7.8)
+  [SENSOR_0] Detected msg #27 (RSSI: -7.05975 dBm)
+  [SENSOR_1] Detected msg #27 (RSSI: -14.6338 dBm)
+  [SENSOR_2] Detected msg #27 (RSSI: -12.5009 dBm)
+  [SENSOR_3] Detected msg #27 (RSSI: -17.9611 dBm)
+[MASTER] Solving msg #27 with 4 sensors
+  SENSOR_0 RSSI=-7.05975 dBm
+  SENSOR_1 RSSI=-14.6338 dBm
+  SENSOR_2 RSSI=-12.5009 dBm
+  SENSOR_3 RSSI=-17.9611 dBm
+[MASTER] Target estimate: (8.39761, 6.8846)
+
+[TARGET] Broadcast #28 - Position: (12.3, 8.1)
+  [SENSOR_0] Detected msg #28 (RSSI: -10.3367 dBm)
+  [SENSOR_1] Detected msg #28 (RSSI: -13.2062 dBm)
+  [SENSOR_2] Detected msg #28 (RSSI: -9.44715 dBm)
+  [SENSOR_3] Detected msg #28 (RSSI: -18.5311 dBm)
+[MASTER] Solving msg #28 with 4 sensors
+  SENSOR_0 RSSI=-10.3367 dBm
+  SENSOR_1 RSSI=-13.2062 dBm
+  SENSOR_2 RSSI=-9.44715 dBm
+  SENSOR_3 RSSI=-18.5311 dBm
+[MASTER] Target estimate: (12.8286, 9.94251)
+
+[TARGET] Broadcast #29 - Position: (12.2, 8.4)
+  [SENSOR_0] Detected msg #29 (RSSI: -8.68912 dBm)
+  [SENSOR_1] Detected msg #29 (RSSI: -12.5852 dBm)
+  [SENSOR_2] Detected msg #29 (RSSI: -10.9793 dBm)
+  [SENSOR_3] Detected msg #29 (RSSI: -19.9058 dBm)
+[MASTER] Solving msg #29 with 4 sensors
+  SENSOR_0 RSSI=-8.68912 dBm
+  SENSOR_1 RSSI=-12.5852 dBm
+  SENSOR_2 RSSI=-10.9793 dBm
+  SENSOR_3 RSSI=-19.9058 dBm
+[MASTER] Target estimate: (10.0025, 11.1034)
+
+[TARGET] Broadcast #30 - Position: (12.1, 8.7)
+  [SENSOR_0] Detected msg #30 (RSSI: -9.91665 dBm)
+  [SENSOR_1] Detected msg #30 (RSSI: -12.2287 dBm)
+  [SENSOR_2] Detected msg #30 (RSSI: -9.58369 dBm)
+  [SENSOR_3] Detected msg #30 (RSSI: -18.4476 dBm)
+[MASTER] Solving msg #30 with 4 sensors
+  SENSOR_0 RSSI=-9.91665 dBm
+  SENSOR_1 RSSI=-12.2287 dBm
+  SENSOR_2 RSSI=-9.58369 dBm
+  SENSOR_3 RSSI=-18.4476 dBm
+[MASTER] Target estimate: (13.3016, 9.49222)
+
+[TARGET] Broadcast #31 - Position: (12, 9)
+  [SENSOR_0] Detected msg #31 (RSSI: -8.7162 dBm)
+  [SENSOR_1] Detected msg #31 (RSSI: -13.3593 dBm)
+  [SENSOR_2] Detected msg #31 (RSSI: -10.2496 dBm)
+  [SENSOR_3] Detected msg #31 (RSSI: -17.148 dBm)
+[MASTER] Solving msg #31 with 4 sensors
+  SENSOR_0 RSSI=-8.7162 dBm
+  SENSOR_1 RSSI=-13.3593 dBm
+  SENSOR_2 RSSI=-10.2496 dBm
+  SENSOR_3 RSSI=-17.148 dBm
+[MASTER] Target estimate: (12.4592, 7.22412)
+
+[TARGET] Broadcast #32 - Position: (11.9, 9.3)
+  [SENSOR_0] Detected msg #32 (RSSI: -9.91986 dBm)
+  [SENSOR_1] Detected msg #32 (RSSI: -12.5346 dBm)
+  [SENSOR_2] Detected msg #32 (RSSI: -12.0493 dBm)
+  [SENSOR_3] Detected msg #32 (RSSI: -18.8476 dBm)
+[MASTER] Solving msg #32 with 4 sensors
+  SENSOR_0 RSSI=-9.91986 dBm
+  SENSOR_1 RSSI=-12.5346 dBm
+  SENSOR_2 RSSI=-12.0493 dBm
+  SENSOR_3 RSSI=-18.8476 dBm
+[MASTER] Target estimate: (12.0114, 8.59228)
+
+[TARGET] Broadcast #33 - Position: (11.8, 9.6)
+  [SENSOR_0] Detected msg #33 (RSSI: -9.77501 dBm)
+  [SENSOR_1] Detected msg #33 (RSSI: -11.9163 dBm)
+  [SENSOR_2] Detected msg #33 (RSSI: -9.73256 dBm)
+  [SENSOR_3] Detected msg #33 (RSSI: -19.7375 dBm)
+[MASTER] Solving msg #33 with 4 sensors
+  SENSOR_0 RSSI=-9.77501 dBm
+  SENSOR_1 RSSI=-11.9163 dBm
+  SENSOR_2 RSSI=-9.73256 dBm
+  SENSOR_3 RSSI=-19.7375 dBm
+[MASTER] Target estimate: (11.9877, 11.4568)
+
+[TARGET] Broadcast #34 - Position: (11.7, 9.9)
+  [SENSOR_0] Detected msg #34 (RSSI: -11.4496 dBm)
+  [SENSOR_1] Detected msg #34 (RSSI: -12.5212 dBm)
+  [SENSOR_2] Detected msg #34 (RSSI: -10.6329 dBm)
+  [SENSOR_3] Detected msg #34 (RSSI: -18.9752 dBm)
+[MASTER] Solving msg #34 with 4 sensors
+  SENSOR_0 RSSI=-11.4496 dBm
+  SENSOR_1 RSSI=-12.5212 dBm
+  SENSOR_2 RSSI=-10.6329 dBm
+  SENSOR_3 RSSI=-18.9752 dBm
+[MASTER] Target estimate: (13.9676, 9.99406)
+
+[TARGET] Broadcast #35 - Position: (11.6, 10.2)
+  [SENSOR_0] Detected msg #35 (RSSI: -10.3857 dBm)
+  [SENSOR_1] Detected msg #35 (RSSI: -13.6854 dBm)
+  [SENSOR_2] Detected msg #35 (RSSI: -8.08101 dBm)
+  [SENSOR_3] Detected msg #35 (RSSI: -18.8381 dBm)

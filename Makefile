@@ -18,7 +18,7 @@ SRCS_C   = tasks.c \
            wait_for_event.c
 
 # Your application C++ files
-SRCS_CXX = main.cpp
+SRCS_CXX = target_node.cpp
 
 # --- Header Includes ---
 # 1. Current directory (.) for FreeRTOSConfig.h and flattened sources
