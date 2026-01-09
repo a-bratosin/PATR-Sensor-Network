@@ -4,7 +4,8 @@
 #include <cstring>
 #include <random>
 #include <vector>
-
+#include <fstream>
+#include <string>
 /* FreeRTOS includes must be wrapped in extern "C" */
 extern "C" {
     #include "FreeRTOS.h"
@@ -84,9 +85,38 @@ typedef struct {
     uint32_t sensorId;
 } SensorNodeEntry;
 
+
+struct Point {
+    float x;
+    float y;
+};
+
+struct Kalman2D
+{
+    float x;
+    float y;
+    float Pxx;
+    float Pyy;
+};
+
+
+
 // ============================================================================
 // GLOBAL HANDLES AND QUEUES
 // ============================================================================
+
+/* Loaded from file in main() */
+std::vector<Point> g_sensorPositions;
+std::vector<Point> g_beaconTrajectory;
+bool loadPointsFromFile(const std::string&, std::vector<Point>&);
+bool savePointsToFile(const std::string&, const std::vector<Point>&);
+
+
+/* Written by Master */
+std::vector<Point> g_estimatedTrajectory;
+
+/* Control flags */
+volatile bool g_trajectoryFinished = false;
 
 // Queue: Sensor nodes -> Master node (detection reports)
 QueueHandle_t xReportQueue = nullptr;
@@ -98,25 +128,20 @@ QueueHandle_t xEchoQueue = nullptr;
 std::vector<SensorNodeEntry> g_sensors;
 
 // Simulation parameters
-const uint32_t NUM_SENSORS = 4;
 const uint32_t BROADCAST_INTERVAL_MS = 1000;  // Target broadcasts every 2 seconds
 const uint32_t ECHO_INTERVAL_MS = 300;       // Master sends echo every 0.5 second
 const uint32_t DETECTION_TIMEOUT_MS = 5000;   // Remove sensor if no echo for 5 seconds
 
-// Sensor fixed positions (anchor nodes)
-const float SENSOR_POSITIONS[4][2] = {
-    {0.0f, 0.0f},      // Sensor 0
-    {30.0f, 0.0f},     // Sensor 1
-    {15.0f, 26.0f},    // Sensor 2
-    {15.0f, -26.0f}    // Sensor 3
-};
 
 // Random number generator for Gaussian noise
 static std::mt19937 g_rng(std::random_device{}());
 static std::normal_distribution<float> g_gauss(0.0f, NOISE_SIGMA);
 
+long NUM_SENSORS = 0;
+
+
 // ============================================================================
-// RADIO MEDIUM FUNCTIONS (C-style)
+// RADIO MEDIUM FUNCTIONS 
 // ============================================================================
 
 /**
@@ -208,84 +233,111 @@ void radioMedium_broadcast(Packet packet) {
 // ============================================================================
 // TASK 1: TARGET NODE - Broadcasts periodic messages
 // ============================================================================
-void vTargetNodeTask(void *pvParameters) {
+void vTargetNodeTask(void *pvParameters)
+{
     uint32_t messageId = 0;
-    float posX = 15.0f, posY = 0.0f;
+    size_t index = 0;
 
-    std::cout << "[TARGET] Initialized at position (" << posX << ", " << posY << ", " << ")" << std::endl;
+    std::cout << "[TARGET] Loaded trajectory with "
+              << g_beaconTrajectory.size() << " points\n";
 
-    for (;;) {
-        messageId++;
-        
+    for (;;)
+    {
+        if (index >= g_beaconTrajectory.size())
+        {
+            g_trajectoryFinished = true;
+            std::cout << "[TARGET] Trajectory finished\n";
+            vTaskDelete(NULL);
+        }
+
         Packet pkt = {
-            messageId,
-            posX,
-            posY,
+            ++messageId,
+            g_beaconTrajectory[index].x,
+            g_beaconTrajectory[index].y,
             TX_POWER,
             xTaskGetTickCount()
         };
 
-        // TO UPDATE DISTANCE LATER WITH A MOVEMENT PATTERN
-        // Simulate mobile target (slight movement)
-        posX -= 0.1f;
-        posY += 0.3f;
-
-        // Broadcast via RadioMedium
         radioMedium_broadcast(pkt);
 
-        std::cout << "[TARGET] Broadcast #" << messageId << " - Position: ("
-                  << pkt.targetX << ", " << pkt.targetY << ")" << std::endl;
+        std::cout << "[TARGET] #" << messageId
+                  << " (" << pkt.targetX
+                  << "," << pkt.targetY << ")\n";
 
+        index++;
         vTaskDelay(pdMS_TO_TICKS(BROADCAST_INTERVAL_MS));
     }
 }
 
+
 // ============================================================================
 // TASK 2: SENSOR NODE - Receives RSSI and reports detections
 // ============================================================================
-void vSensorNodeTask(void *pvParameters) {
+void vSensorNodeTask(void *pvParameters)
+{
     uint32_t sensorId = *((uint32_t*)pvParameters);
     QueueHandle_t sensorInputQueue = xQueueCreate(10, sizeof(RSSIReport));
-    
-    if (sensorInputQueue == nullptr) {
-        std::cerr << "[SENSOR_" << sensorId << "] Failed to create input queue!" << std::endl;
-        return;
+
+    if (!sensorInputQueue)
+    {
+        std::cerr << "[SENSOR_" << sensorId << "] Queue create failed\n";
+        vTaskDelete(NULL);
     }
 
-    // Register with RadioMedium
-    radioMedium_registerSensor(sensorId, sensorInputQueue, 
-                               SENSOR_POSITIONS[sensorId][0], 
-                               SENSOR_POSITIONS[sensorId][1]);
+    radioMedium_registerSensor(
+        sensorId,
+        sensorInputQueue,
+        g_sensorPositions[sensorId].x,
+        g_sensorPositions[sensorId].y
+    );
 
-    std::cout << "[SENSOR_" << sensorId << "] Started at position ("
-              << SENSOR_POSITIONS[sensorId][0] << ", " << SENSOR_POSITIONS[sensorId][1] << ")" << std::endl;
+    std::cout << "[SENSOR_" << sensorId << "] Position ("
+              << g_sensorPositions[sensorId].x << ", "
+              << g_sensorPositions[sensorId].y << ")\n";
 
-    RSSIReport rssiReport;
+    RSSIReport rssi;
 
-    for (;;) {
-        // Receive RSSI data from RadioMedium
-        if (xQueueReceive(sensorInputQueue, &rssiReport, pdMS_TO_TICKS(500)) == pdPASS) {
-            // Only report if signal strength is good enough
-            if (rssiReport.rssi > -90.0f) {  // Threshold for minimum acceptable signal
-                DetectionReport report = {
+    for (;;)
+    {
+        if (xQueueReceive(sensorInputQueue, &rssi, pdMS_TO_TICKS(500)) == pdPASS)
+        {
+            if (rssi.rssi > -90.0f)
+            {
+                DetectionReport report {
                     sensorId,
-                    rssiReport.messageId,
-                    rssiReport.rssi,
+                    rssi.messageId,
+                    rssi.rssi,
                     xTaskGetTickCount()
                 };
 
-                if (xQueueSend(xReportQueue, &report, portMAX_DELAY) == pdPASS) {
-                    std::cout << "  [SENSOR_" << sensorId << "] Detected msg #" 
-                              << rssiReport.messageId << " (RSSI: " << rssiReport.rssi << " dBm)" << std::endl;
-                }
-            } else {
-                std::cout << "  [SENSOR_" << sensorId << "] Signal too weak for msg #" 
-                          << rssiReport.messageId << " (RSSI: " << rssiReport.rssi << " dBm)" << std::endl;
+                xQueueSend(xReportQueue, &report, portMAX_DELAY);
             }
         }
 
-        vTaskDelay(pdMS_TO_TICKS(100));
+        vTaskDelay(pdMS_TO_TICKS(50));
     }
+}
+
+// ============================================================================
+// TASK 3: MASTER NODE - Coordinates sensors and determines target position
+// ============================================================================
+
+void kalmanUpdate(Kalman2D& kf, float measX, float measY)
+{
+    const float R = 4.0f;   // measurement noise
+    const float Q = 0.01f;  // process noise
+
+    kf.Pxx += Q;
+    kf.Pyy += Q;
+
+    float Kx = kf.Pxx / (kf.Pxx + R);
+    float Ky = kf.Pyy / (kf.Pyy + R);
+
+    kf.x += Kx * (measX - kf.x);
+    kf.y += Ky * (measY - kf.y);
+
+    kf.Pxx *= (1.0f - Kx);
+    kf.Pyy *= (1.0f - Ky);
 }
 
 
@@ -293,168 +345,170 @@ bool multilateration(
     const DetectionReport* detections,
     uint32_t count,
     float& outX,
-    float& outY
-) {
+    float& outY)
+{
     if (count < 3) return false;
 
     uint32_t refId = detections[0].sensorId;
-    float x0 = SENSOR_POSITIONS[refId][0];
-    float y0 = SENSOR_POSITIONS[refId][1];
+
+    float x0 = g_sensorPositions[refId].x;
+    float y0 = g_sensorPositions[refId].y;
     float d0 = rssiToDistance(detections[0].rssi);
 
-    float ATA[2][2] = {0};
-    float ATb[2] = {0};
+    float ATA[2][2] = {{0,0},{0,0}};
+    float ATb[2] = {0,0};
 
-    for (uint32_t i = 1; i < count; i++) {
+    for (uint32_t i = 1; i < count; i++)
+    {
         uint32_t id = detections[i].sensorId;
 
-        float xi = SENSOR_POSITIONS[id][0];
-        float yi = SENSOR_POSITIONS[id][1];
+        float xi = g_sensorPositions[id].x;
+        float yi = g_sensorPositions[id].y;
         float di = rssiToDistance(detections[i].rssi);
 
-        // Reject insane distances (RSSI glitches)
-        if (di <= 0.1f || di > 200.0f)
+        if (di < 0.1f || di > 200.0f)
             continue;
 
-        float w = 1.0f / di;  // weight
-
-        float Ai[2];
-        Ai[0] = 2.0f * (xi - x0);
-        Ai[1] = 2.0f * (yi - y0);
+        float Ai[2] = {
+            2.0f * (xi - x0),
+            2.0f * (yi - y0)
+        };
 
         float bi =
-            (d0 * d0 - di * di) +
-            (xi * xi - x0 * x0) +
-            (yi * yi - y0 * y0);
+            (d0*d0 - di*di) +
+            (xi*xi - x0*x0) +
+            (yi*yi - y0*y0);
 
-        // Weighted AᵀA
+        float w = 1.0f / di;
+
         ATA[0][0] += w * Ai[0] * Ai[0];
         ATA[0][1] += w * Ai[0] * Ai[1];
         ATA[1][0] += w * Ai[1] * Ai[0];
         ATA[1][1] += w * Ai[1] * Ai[1];
 
-        // Weighted Aᵀb
         ATb[0] += w * Ai[0] * bi;
         ATb[1] += w * Ai[1] * bi;
     }
 
-    float det = ATA[0][0] * ATA[1][1] - ATA[0][1] * ATA[1][0];
+    float det = ATA[0][0]*ATA[1][1] - ATA[0][1]*ATA[1][0];
     if (fabs(det) < 1e-6f)
         return false;
 
-    float inv[2][2];
-    inv[0][0] =  ATA[1][1] / det;
-    inv[0][1] = -ATA[0][1] / det;
-    inv[1][0] = -ATA[1][0] / det;
-    inv[1][1] =  ATA[0][0] / det;
-
-    outX = inv[0][0] * ATb[0] + inv[0][1] * ATb[1];
-    outY = inv[1][0] * ATb[0] + inv[1][1] * ATb[1];
+    outX = ( ATA[1][1]*ATb[0] - ATA[0][1]*ATb[1] ) / det;
+    outY = ( -ATA[1][0]*ATb[0] + ATA[0][0]*ATb[1] ) / det;
 
     return true;
 }
 
 
-// ============================================================================
-// TASK 3: MASTER NODE - Coordinates sensors and determines target position
-// ============================================================================
+
 void vMasterNodeTask(void *pvParameters)
 {
-    std::cout << "[MASTER] Initialized with " << NUM_SENSORS << " sensors" << std::endl;
+    static std::vector<DetectionReport> detections;
+    if (detections.empty())
+        detections.resize(NUM_SENSORS);
 
-    static DetectionReport detections[NUM_SENSORS];
     uint32_t detectionCount = 0;
-
     uint32_t currentMessageId = 0;
-    TickType_t messageStartTick = 0;
-
-    const TickType_t MESSAGE_TIMEOUT = pdMS_TO_TICKS(300);
+    TickType_t startTick = 0;
 
     DetectionReport report;
 
     for (;;)
     {
-        /* ===============================
-           PHASE 1: COLLECT DETECTIONS
-           =============================== */
+        if (g_trajectoryFinished && uxQueueMessagesWaiting(xReportQueue) == 0)
+        {
+            std::cout << "[MASTER] Saving results and stopping\n";
+            savePointsToFile("estimated1.txt", g_estimatedTrajectory);
+            vTaskEndScheduler();
+        }
 
         while (xQueueReceive(xReportQueue, &report, 0) == pdPASS)
         {
-            /* Start collecting a new message */
             if (currentMessageId == 0)
             {
                 currentMessageId = report.messageId;
-                messageStartTick = xTaskGetTickCount();
+                startTick = xTaskGetTickCount();
                 detectionCount = 0;
             }
 
-            /* Ignore detections from other messages */
             if (report.messageId != currentMessageId)
                 continue;
 
-            /* Avoid duplicate sensor entries */
-            bool duplicate = false;
+            bool dup = false;
             for (uint32_t i = 0; i < detectionCount; i++)
-            {
                 if (detections[i].sensorId == report.sensorId)
-                {
-                    duplicate = true;
-                    break;
-                }
-            }
+                    dup = true;
 
-            if (!duplicate && detectionCount < NUM_SENSORS)
-            {
+            if (!dup && detectionCount < detections.size())
                 detections[detectionCount++] = report;
-            }
         }
 
-        /* ===============================
-           PHASE 2: CHECK TIMEOUT
-           =============================== */
-
-        if (currentMessageId != 0 &&
-            (xTaskGetTickCount() - messageStartTick) > MESSAGE_TIMEOUT)
+        if (currentMessageId &&
+            (xTaskGetTickCount() - startTick) > pdMS_TO_TICKS(300))
         {
             if (detectionCount >= 3)
             {
-                float estX = 0.0f;
-                float estY = 0.0f;
-
-                std::cout << "[MASTER] Solving msg #" << currentMessageId
-                          << " with " << detectionCount << " sensors" << std::endl;
-
-                for (uint32_t i = 0; i < detectionCount; i++)
+                float x, y;
+                if (multilateration(detections.data(), detectionCount, x, y))
                 {
-                    std::cout << "  SENSOR_" << detections[i].sensorId
-                              << " RSSI=" << detections[i].rssi << " dBm" << std::endl;
-                }
+                    static Kalman2D kf;
+                    kalmanUpdate(kf, x, y);
+                    Point p;
+                    p.x = kf.x;
+                    p.y = kf.y;
+                    g_estimatedTrajectory.push_back(p);
 
-                if (multilateration(detections, detectionCount, estX, estY))
-                {
-                    std::cout << "[MASTER] Target estimate: ("
-                              << estX << ", " << estY << ")\n" << std::endl;
-                }
-                else
-                {
-                    std::cout << "[MASTER] Multilateration failed\n" << std::endl;
+
+                    std::cout << "[MASTER] (" << x << "," << y << ")\n";
                 }
             }
-            else
-            {
-                std::cout << "[MASTER] Msg #" << currentMessageId
-                          << " discarded (" << detectionCount
-                          << " detections)\n" << std::endl;
-            }
 
-            /* Reset state for next message */
             currentMessageId = 0;
             detectionCount = 0;
         }
 
-        vTaskDelay(pdMS_TO_TICKS(20));
+        vTaskDelay(pdMS_TO_TICKS(10));
     }
 }
+
+// ============================================================================
+// MISCELLANEOUS FILE I/O FUNCTIONS
+// ============================================================================
+
+bool loadPointsFromFile(const std::string& path, std::vector<Point>& out)
+{
+    std::ifstream file(path);
+    if (!file.is_open())
+        return false;
+
+    out.clear();
+
+    std::string line;
+    while (std::getline(file, line))
+    {
+        float x, y;
+        if (sscanf(line.c_str(), "%f,%f", &x, &y) == 2)
+        {
+            out.push_back({x, y});
+        }
+    }
+    return !out.empty();
+}
+
+bool savePointsToFile(const std::string& path,
+                      const std::vector<Point>& data)
+{
+    std::ofstream file(path);
+    if (!file.is_open())
+        return false;
+
+    for (const auto& p : data)
+        file << p.x << "," << p.y << "\n";
+
+    return true;
+}
+
 
 
 // ============================================================================
@@ -481,6 +535,22 @@ int main(void) {
 
     const uint32_t STACK_SIZE = 2048; // 2048 is in words, not bytes - tried experimentally
     BaseType_t status;
+
+    if (!loadPointsFromFile("input/sensor_positions/triangles_10m-apart_60x60.txt", g_sensorPositions))
+    {
+        std::cerr << "Failed to load sensor positions\n";
+        return 1;
+    }
+
+    if (!loadPointsFromFile("input/trajectories/zigzag_60x60_50p.txt", g_beaconTrajectory))
+    {
+        std::cerr << "Failed to load beacon trajectory\n";
+        return 1;
+    }
+        std::cout << "[MAIN] Loaded "
+              << g_sensorPositions.size() << " sensors, "
+             << g_beaconTrajectory.size() << " trajectory points\n";
+    NUM_SENSORS = g_sensorPositions.size();
 
     // Create Target Node task
     status = xTaskCreate(vTargetNodeTask, "TargetNode", STACK_SIZE, nullptr, 2, nullptr);
