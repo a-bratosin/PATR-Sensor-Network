@@ -325,7 +325,7 @@ void vSensorNodeTask(void *pvParameters)
 void kalmanUpdate(Kalman2D& kf, float measX, float measY)
 {
     const float R = 4.0f;   // measurement noise
-    const float Q = 0.01f;  // process noise
+    const float Q = 0.1f;  // process noise
 
     kf.Pxx += Q;
     kf.Pyy += Q;
@@ -452,11 +452,11 @@ void vMasterNodeTask(void *pvParameters)
                 float x, y;
                 if (multilateration(detections.data(), detectionCount, x, y))
                 {
-                    static Kalman2D kf;
-                    kalmanUpdate(kf, x, y);
+                    //static Kalman2D kf;
+                    //kalmanUpdate(kf, x, y);
                     Point p;
-                    p.x = kf.x;
-                    p.y = kf.y;
+                    p.x = x;
+                    p.y = y;
                     g_estimatedTrajectory.push_back(p);
 
 
