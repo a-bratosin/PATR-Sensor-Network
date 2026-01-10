@@ -19,7 +19,7 @@ SRCS_C   = $(LIB_DIR)/tasks.c \
            $(LIB_DIR)/wait_for_event.c
 
 # Your application C++ files (still in root)
-SRCS_CXX = target_node.cpp
+SRCS_CXX = main.cpp
 
 # --- Header Includes ---
 # 1. Added $(LIB_DIR) so the compiler finds FreeRTOSConfig.h and wait_for_event.h
