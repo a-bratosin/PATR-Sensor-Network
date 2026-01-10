@@ -536,13 +536,13 @@ int main(void) {
     const uint32_t STACK_SIZE = 2048; // 2048 is in words, not bytes - tried experimentally
     BaseType_t status;
 
-    if (!loadPointsFromFile("input/sensor_positions/triangles_10m-apart_60x60.txt", g_sensorPositions))
+    if (!loadPointsFromFile("input/sensor_positions/random_30p_60x60.txt", g_sensorPositions))
     {
         std::cerr << "Failed to load sensor positions\n";
         return 1;
     }
 
-    if (!loadPointsFromFile("input/trajectories/zigzag_60x60_50p.txt", g_beaconTrajectory))
+    if (!loadPointsFromFile("input/trajectories/ellipse_60x60_50p.txt", g_beaconTrajectory))
     {
         std::cerr << "Failed to load beacon trajectory\n";
         return 1;
